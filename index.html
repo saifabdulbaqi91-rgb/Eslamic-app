@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تَطْبِيقُ التَّرْبِيَةِ الإِسْلَامِيَّةِ الشَّامِلُ - الصَّفُّ السَّابِعُ | أ/ سَيْفُ الإِسْلَامِ حُسَيْن</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --primary-green: #0a5c36;
+            --secondary-green: #0e7d4a;
+            --accent-gold: #d4af37;
+            --bg-light: #f4f7f5;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --text-dark: #1f2937;
+            --correct-green: #16a34a;
+            --danger-red: #dc2626;
+            --info-blue: #2563eb;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Anti-Theft Watermark Guard */
+        body::before {
+            content: "إِعْدَادُ وَتَصْمِيمُ: أ/ سَيْفُ الإِسْلَامِ حُسَيْن - 0531343626 - حقوق الطبع محفوظة 2026 ©";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: rgba(10, 92, 54, 0.04);
+            pointer-events: none;
+            z-index: 9999;
+            width: 100%;
+            text-align: center;
+        }
+
+        .protection-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            color: #fff;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            font-size: 1.8rem;
+            font-weight: 900;
+            text-align: center;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-green), #053b22);
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+            border-bottom: 5px solid var(--accent-gold);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.6rem;
+            font-weight: 900;
+        }
+
+        header p {
+            margin: 5px 0 0 0;
+            font-size: 1rem;
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+
+        .copyright-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 15px;
+            border-radius: 15px;
+            margin-top: 8px;
+            font-size: 0.88rem;
+            font-weight: 800;
+            border: 1px solid var(--accent-gold);
+        }
+
+        .controls-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1000px;
+            margin: 15px auto 0 auto;
+            padding: 0 15px;
+            width: 100%;
+        }
+
+        .btn-audio-toggle {
+            background: var(--accent-gold);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 900;
+            cursor: pointer;
+            font-family: inherit;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+        }
+
+        .btn-audio-toggle:active { transform: scale(0.95); }
+
+        .score-badge {
+            background: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 900;
+            color: var(--primary-green);
+            border: 2px solid var(--primary-green);
+            font-size: 1.05rem;
+        }
+
+        .tabs-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px auto;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            padding: 0 10px;
+        }
+
+        .tab-btn {
+            background: white;
+            border: 2px solid var(--primary-green);
+            color: var(--primary-green);
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--primary-green);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(10, 92, 54, 0.2);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto 30px auto;
+            padding: 0 15px;
+            width: 100%;
+            flex: 1;
+        }
+
+        .lesson-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid #e5e7eb;
+            display: none;
+        }
+
+        .lesson-card.active {
+            display: block;
+        }
+
+        .section-title {
+            color: var(--primary-green);
+            border-bottom: 3px solid var(--accent-gold);
+            padding-bottom: 8px;
+            margin-top: 0;
+            font-size: 1.4rem;
+            font-weight: 900;
+        }
+
+        .sub-header {
+            background: #eef2ff;
+            color: #3730a3;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 1.05rem;
+            margin: 20px 0 10px 0;
+            border-right: 5px solid #4f46e5;
+        }
+
+        .quran-box {
+            background: #fcf8ec;
+            border: 2px dashed var(--accent-gold);
+            padding: 20px;
+            border-radius: 15px;
+            font-family: 'Amiri', serif;
+            font-size: 1.65rem;
+            line-height: 2.4;
+            text-align: center;
+            color: #2c2202;
+            margin: 15px 0;
+        }
+
+        .aya-num {
+            color: var(--primary-green);
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin: 0 4px;
+        }
+
+        .audio-player-btn {
+            background: var(--secondary-green);
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 12px;
+            font-weight: 900;
+            cursor: pointer;
+            font-family: inherit;
+            margin-bottom: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 3px 10px rgba(10, 92, 54, 0.2);
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .audio-player-btn:hover { background: var(--primary-green); }
+        .audio-player-btn:active { transform: scale(0.96); }
+
+        .vocab-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .vocab-table th, .vocab-table td {
+            padding: 10px 12px;
+            border: 1px solid #e5e7eb;
+            text-align: right;
+            font-size: 0.95rem;
+        }
+
+        .vocab-table th {
+            background: var(--primary-green);
+            color: white;
+            font-weight: 800;
+        }
+
+        .vocab-table tr:nth-child(even) { background: #f9fafb; }
+
+        .quiz-box {
+            background: #fdfbf7;
+            border: 2px solid #e2e8f0;
+            padding: 18px;
+            border-radius: 15px;
+            margin: 18px 0;
+        }
+
+        .quiz-question {
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            color: var(--primary-green);
+            line-height: 1.6;
+        }
+
+        .quiz-option {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary-green);
+            background: #f0fdf4;
+        }
+
+        .quiz-option.correct {
+            background: #dcfce7 !important;
+            border-color: #16a34a !important;
+            color: #14532d;
+        }
+
+        .quiz-option.wrong {
+            background: #fee2e2 !important;
+            border-color: #dc2626 !important;
+            color: #7f1d1d;
+        }
+
+        .guidance-card {
+            background: #eff6ff;
+            border-right: 5px solid var(--info-blue);
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-weight: 700;
+            color: #1e40af;
+            display: none;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .canvas-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        canvas {
+            border: 3px dashed var(--primary-green);
+            border-radius: 15px;
+            background: #ffffff;
+            cursor: crosshair;
+            touch-action: none;
+            max-width: 100%;
+        }
+
+        .canvas-tools {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-tool {
+            background: #4b5563;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        footer {
+            background: var(--primary-green);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            border-top: 4px solid var(--accent-gold);
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;" ondragstart="return false;">
+
+    <div class="protection-overlay" id="protOverlay">
+        ⛔ غَيْرُ مَسْمُوحٍ بِالْتِقَاطِ صُوَرِ الشَّاشَةِ لِحِفْظِ حُقُوقِ المِلْكِيَّةِ الفِكْرِيَّةِ
+    </div>
+
+    <header>
+        <h1>📖 التَّطْبِيقُ التَّفَاعُلِيُّ الشَّامِلُ - التَّرْبِيَةُ الإِسْلَامِيَّةُ (الصَّفُّ السَّابِعُ)</h1>
+        <p>الْجُمْهُورِيَّةُ العَرَبِيَّةُ السُّورِيَّةُ - وِزَارَةُ التَّرْبِيَةِ (2025 - 2026 م)</p>
+        <div class="copyright-badge">إِعْدَادُ وَتَصْمِيمُ: أ/ سَيْفُ الإِسْلَامِ حُسَيْن - 0531343626</div>
+    </header>
+
+    <div class="controls-bar">
+        <button class="btn-audio-toggle" id="audioBtn" onclick="enableAudioEngine()">🔊 اضْغَطْ هُنَا لِتَفْعِيلِ الصَّوْتِ وَالمُحَرِّكِ</button>
+        <div class="score-badge" id="scoreDisplay">⭐ النِّقَاطُ: 0</div>
+    </div>
+
+    <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchTab(0, this)">📖 الدَّرْسُ 1: القُرْآنُ كِتَابُ اللَّهِ</button>
+        <button class="tab-btn" onclick="switchTab(1, this)">🌧️ الدَّرْسُ 2: مِنْ نِعَمِ اللَّهِ</button>
+        <button class="tab-btn" onclick="switchTab(2, this)">🤝 الدَّرْسُ 3: مِنْ آدَابِ المَجْلِسِ</button>
+        <button class="tab-btn" onclick="switchTab(3, this)">✍️ سَبُّورَةُ الخَطِّ وَالتَّدْرِيبِ</button>
+    </div>
+
+    <div class="container">
+
+        <!-- ================= LESSON 1 ================= -->
+        <div class="lesson-card active" id="tab0">
+            <h2 class="section-title">الالدَّرْسُ الأَوَّلُ: الْقُرْآنُ الكَرِيمُ كِتَابُ اللَّهِ المَبِينُ (ص 4 - 7)</h2>
+            
+            <div class="sub-header">1. التِّلَاوَةُ المُرَتَّلَةُ بصَوْتِ الشَّيْخِ المَقْرِئِ مَحْمُود خَلِيل الحُصَرِيِّ (سُورَةُ السَّجْدَةِ 1 - 9)</div>
+            <button class="audio-player-btn" onclick="playQuranAudio('https://server13.mp3quran.net/hussary/032.mp3')">
+                ▶️ تشغيل / إيقاف التلاوة بصوت الشيخ الحصري (سورة السجدة)
+            </button>
+
+            <div class="quran-box">
+                ﴿ الم <span class="aya-num">(1)</span> تَنْزِيلُ الْكِتَابِ لَا رَيْبَ فِيهِ مِنْ رَبِّ الْعَالَمِينَ <span class="aya-num">(2)</span> أَمْ يَقُولُونَ افْتَرَاهُ بَلْ هُوَ الْحَقُّ مِنْ رَبِّكَ لِتُنْذِرَ قَوْمًا مَا أَتَاهُمْ مِنْ نَذِيرٍ مِنْ قَبْلِكَ لَعَلَّهُمْ يَهْتَدُونَ <span class="aya-num">(3)</span> اللَّهُ الَّذِي خَلَقَ السَّمَاوَاتِ وَالْأَرْضَ وَمَا بَيْنَهُمَا فِي سِتَّةِ أَيَّامٍ ثُمَّ اسْتَوَىٰ عَلَى الْعَرْشِ مَا لَكُمْ مِنْ دُونِهِ مِنْ وَلِيٍّ وَلَا شَفِيعٍ أَفَلَا تَتَذَكَّرُونَ <span class="aya-num">(4)</span> يُدَبِّرُ الْأَمْرَ مِنَ السَّمَاءِ إِلَى الْأَرْضِ ثُمَّ يَعْرُجُ إِلَيْهِ فِي يَوْمٍ كَانَ مِقْدَارُهُ أَلْفَ سَنَةٍ مِمَّا تَعُدُّونَ <span class="aya-num">(5)</span> ذَلِكَ عَالِمُ الْغَيْبِ وَالشَّهَادَةِ الْعَزِيزُ الرَّحِيمُ <span class="aya-num">(6)</span> الَّذِي أَحْسَنَ كُلَّ شَيْءٍ خَلَقَهُ وَبَدَأَ خَلْقَ الْإِنْسَانِ مِنْ طِينٍ <span class="aya-num">(7)</span> ثُمَّ جَعَلَ نَسْلَهُ مِنْ سُلَالَةٍ مِنْ مَاءٍ مَهِينٍ <span class="aya-num">(8)</span> ثُمَّ سَوَّاهُ وَنَفَخَ فِيهِ مِنْ رُوحِهِ وَجَعَلَ لَكُمُ السَّمْعَ وَالْأَبْصَارَ وَالْأَفْئِدَةَ قَلِيلًا مَا تَشْكُرُونَ <span class="aya-num">(9)</span> ﴾
+            </div>
+
+            <div class="sub-header">2. بَنْكُ الأَسْئِلَةِ التَّفَاعُلِيِّ وَالتَّدْرِيبِ الذَّكِيِّ (الدَّرْسُ الأَوَّلُ)</div>
+
+            <!-- Q1 -->
+            <div class="quiz-box">
+                <div class="quiz-question">س1: مَا مَعْنَى قَوْلِهِ تَعَالَى: (لَا رَيْبَ فِيهِ) فِي سُورَةِ السَّجْدَةِ؟</div>
+                <div class="quiz-option" onclick="handleChoice(this, false, 'g1_1', 'لَا غُمُوضَ فِيهِ إِجَابَةٌ غَيْرُ دَقِيقَةٍ. المَعْنَى المَطْلُوبُ هُوَ نَفْيُ الشَّكِّ كُلِّيَّاً.')">أ) لَا غُمُوضَ فِيهِ</div>
+                <div class="quiz-option" onclick="handleChoice(this, true, 'g1_1', 'أَحْسَنْتَ! (لَا رَيْبَ فِيهِ) أَيْ لَا شَكَّ فِيهِ أَنَّهُ مِنْ عِنْدِ اللَّهِ.')">ب) لَا شَكَّ فِيهِ</div>
+                <div class="quiz-option" onclick="handleChoice(this, false, 'g1_1', 'إِجَابَةٌ خَاطِئَةٌ!')">ج) لَا اخْتِلَافَ فِيهِ</div>
+                <div class="guidance-card" id="g1_1">💡 <strong>تَوْجِيهٌ تَرْبَوِيٌّ:</strong> (لَا رَيْبَ فِيهِ) تَعْنِي نَفْيَ الشَّكِّ تَمَاماً عَنْ القُرْآنِ الكَرِيمِ كَمَا وَرَدَ فِي كِتَابِكَ ص 5[span_10](start_span)[span_10](end_span).</div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="quiz-box">
+                <div class="quiz-question">س2: المَقْصُودُ بِكَلِمَةِ (سَوَّاهُ) فِي قَوْلِهِ تَعَالَى: ﴿ ثُمَّ سَوَّاهُ وَنَفَخَ فِيهِ مِنْ رُوحِهِ ﴾ هُوَ:</div>
+                <div class="quiz-option" onclick="handleChoice(this, true, 'g1_2', 'إِجَابَةٌ صَحِيحَةٌ! أَتَمَّ خَلْقَهُ وَهَيَّأَهُ لِلْحَيَاةِ.')">أ) أَتَمَّ خَلْقَهُ</div>
+                <div class="quiz-option" onclick="handleChoice(this, false, 'g1_2', 'إِجَابَةٌ خَاطِئَةٌ!')">ب) جَعَلَهُ مُسْتَوِياً فِي المَشْيِ</div>
+                <div class="quiz-option" onclick="handleChoice(this, false, 'g1_2', 'إِجَابَةٌ خَاطِئَةٌ!')">ج) خَلَقَهُ مِنْ طِينٍ</div>
+                <div class="guidance-card" id="g1_2">💡 <strong>تَوْجِيهٌ تَرْبَوِيٌّ:</strong> التسوية تعني إتمام الخلق وجعله في أبهى صورة وتقويم (ص 5)[span_11](start_span)[span_11](end_span).</div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="quiz-box">
+                <div class="quiz-question">س3: مَا الحُكْمُ التَّجْوِيدِيُّ فِي قَوْلِهِ تَعَالَى: (مِنْ رَبِّ)؟</div>
+                <div class="quiz-option" onclick="handleChoice(this, false, 'g1_3', 'إِجَابَةٌ خَاطِئَةٌ!')">أ) إِظْهَارٌ حَلْقِيٌّ</div>
+                <div class="quiz-option" onclick="handleChoice(this, true, 'g1_3', 'أَبْدَعْتَ! إِدْغَامٌ بِلَا غُنَّةٍ لِوُرُودِ حَرْفِ الرَّاءِ بَعْدَ النُّونِ السَّاكِنَةِ.')">ب) إِدْغَامٌ بِلَا غُنَّةٍ</div>
+                <div class="quiz-option" onclick="handleChoice(this, false, 'g1_3', 'إِجَابَةٌ خَاطِئَةٌ!')">ج) إِخْفَاءٌ حَقِيقِيٌّ</div>
+                <div class="guidance-card" id="g1_3">💡 <strong>تَوْجِيهٌ تَرْبَوِيٌّ:</strong> حروف الإدغام بلا غنة هما (اللام والراء) إذا جاءا بعد النون الساكنة أو التنوين (ص 6)[span_12](start_span)[span_12](end_span).</div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="quiz-box">
+                <div class="quiz-question">س4: صَحِّحِ العِبَارَةَ: "جَعَلَ اللَّهُ لِلإِنْسَانِ السَّمْعَ وَالبَصَرَ ثُمَّ نَفَخَ فِيهِ مِنْ رُوحِهِ" (ص 7):</div>
+                <div class="quiz-option" onclick="handleChoice(this, false, 'g1_4', 'العِبَارَةُ غَيْرُ صَحِيحَةٍ فِي التَّرْتِيبِ الدَّقِيقِ!')">أ) العِبَارَةُ صَحِيحَةٌ</div>
+                <div class="quiz-option" onclick="handleChoice(this, true, 'g1_4', 'صَحِيحٌ! التَّصْحِيحُ: نَفَخَ فِيهِ مِنْ رُوحِهِ ثُمَّ جَعَلَ لَهُ السَّمْعَ وَالأَبْصَارَ.')">ب) العِبَارَةُ غَلَط (التَّصْحِيحُ: نَفَخَ فِيهِ مِنْ رُوحِهِ ثُمَّ جَعَلَ السَّمْعَ وَالأَبْصَارَ)</div>
+                <div class="guidance-card" id="g1_4">💡 <strong>تَوْجِيهٌ تَرْبَوِيٌّ:</strong> الترتيب القرآني في الآية 9: ﴿ ثُمَّ سَوَّاهُ وَنَفَخَ فِيهِ مِنْ رُوحِهِ وَجَعَلَ لَكُمُ السَّمْعَ وَالْأَبْصَارَ ﴾[span_13](start_span)[span_13](end_span)[span_14](start_span)[span_14](end_span).</div>
+            </div>
+        </div>
+
+        <!-- ================= LESSON 2 ================= -->
+        <div class="lesson-card" id="tab1">
+            <h2 class="section-title">الدَّرْسُ الثَّانِي: مِنْ نِعَمِ اللَّهِ عَلَى النَّاسِ وَرَحْمَتِهِ بِهِمْ (ص 8 - 12)</h2>
+            
+            <div class="sub-header">1. التِّلَاوَةُ المُرَتَّلَةُ بصَوْتِ الشَّيْخِ المَقْرِئِ مَحْمُود خَلِيل الحُصَرِيِّ (سُورَةُ الشُّورَى 27 - 35)</div>
+            <button class="audio-player-btn" onclick="playQuranAudio('https://server13.mp3quran.net/hussary/042.mp3')">
+                ▶️ تشغيل / إيقاف التلاوة بصوت الشيخ الحصري (سورة الشورى)
+            </button>
+
+            <div class="quran-box">
+                ﴿ وَهُوَ الَّذِي يُنَزِّلُ الْغَيْثَ مِنْ بَعْدِ مَا قَنَطُوا وَيَنْشُرُ رَحْمَتَهُ وَهُوَ الْوَلِيُّ الْحَمِيدُ <span class="aya-num">(28)</span> وَمِنْ آيَاتِهِ خَلْقُ السَّمَاوَاتِ وَالْأَرْضِ وَمَا بَثَّ فِيهِمَا مِنْ دَابَّةٍ وَهُوَ عَلَى جَمْعِهِمْ إِذَا يَشَاءُ قَدِيرٌ <span class="aya-num">(29)</span> وَمَا أَصَابَكُمْ مِنْ مُصِيبَةٍ فَبِمَا كَسَبَتْ أَيْدِيكُمْ وَيَعْفُو عَنْ كَثِيرٍ <span class="aya-num">(30)</span> وَمَا أَنْتُمْ بِمُعْجِزِينَ فِي الْأَرْضِ وَمَا لَكُمْ مِنْ دُونِ اللَّهِ مِنْ وَلِيٍّ وَلَا نَصِيرٍ <span class="aya-num">(31)</span> وَمِنْ آيَاتِهِ الْجَوَارِ فِي الْبَحْرِ كَالْأَعْلَامِ <span class="aya-num">(32)</span> إِنْ يَشَأْ يُسْكِنِ الرِّيحَ فَيَظْلَلْنَ رَوَاكِدَ عَلَى ظَهْرِهِ إِنَّ فِي ذَلِكَ لَآيَاتٍ لِكُلِّ صَبَّارٍ شَكُورٍ <span class="aya-num">(33)</span> أَوْ يُوبِقْهُنَّ بِمَا كَسَبُوا وَيَعْفُ عَنْ كَثِيرٍ <span class="aya-num">(34)</span> ﴾
+            </div>
+
+            <div class="sub-header">2. بَنْكُ الأَسْئِلَةِ التَّفَاعُلِيِّ (الدَّرْسُ الثَّانِي)</div>
+
+            <!-- Q1 -->
+            <div class="quiz-box">
+                <div class="quiz-question">س1: مَا مَعْنَى كَلِمَةِ (الأَعْلَامِ) فِي قَوْلِهِ تَعَالَى: ﴿ كَالْأَعْلَامِ ﴾؟</div>
+                <div class="quiz-option" onclick="handleChoice(this, false, 'g2_1', 'إِجَابَةٌ خَاطِئَةٌ!')">أ) الرَّايَاتُ وَالأَعْلَامُ</div>
+                <div class="quiz-option" onclick="handleChoice(this, true, 'g2_1', 'مُمْتَازٌ! الأَعْلَامُ فِي الآيَةِ تَعْنِي الجِبَالَ العَالِيَةَ المُرْتَفِعَةَ.')">ب) الجِبَالُ العَالِيَةُ</div>
+                <div class="quiz-option" onclick="handleChoice(this, false, 'g2_1', 'إِجَابَةٌ خَاطِئَةٌ!')">ج) الأَشْجَارُ الكَبِيرَةُ</div>
+                <div class="guidance-card" id="g2_1">💡 <strong>تَوْجِيهٌ تَرْبَوِيٌّ:</strong> تشبه الآية الكريمة السفن الضخمة الجارية في البحر بالجبال المرتفعة (ص 9)[span_15](start_span)[span_15](end_span).</div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="quiz-box">
+                <div class="quiz-question">س2: مَعْنَى قَوْلِهِ تَعَالَى: ﴿ أَوْ يُوبِقْهُنَّ بِمَا كَسَبُوا ﴾ أَيْ:</div>
+                <div class="quiz-option" onclick="handleChoice(this, true, 'g2_2', 'إِجَابَةٌ صَحِيحَةٌ! يُوبِقْهُنَّ أَيْ يُهْلِكْهُنَّ بِالْغَرَقِ.')">أ) يُهْلِكْهُنَّ بِالْغَرَقِ</div>
+                <div class="quiz-option" onclick="handleChoice(this, false, 'g2_2', 'إِجَابَةٌ خَاطِئَةٌ!')">ب) يُنْجِيهِنَّ شَاطِئَ الأَمَانِ</div>
+                <div class="quiz-option" onclick="handleChoice(this, false, 'g2_2', 'إِجَابَةٌ خَاطِئَةٌ!')">ج) يُوَقِّفُ حَرَكَتَهُنَّ</div>
+                <div class="guidance-card" id="g2_2">💡 <strong>تَوْجِيهٌ تَرْبَوِيٌّ:</strong> الإيباق في اللغة القرآنية يعني الإهلاك والعقاب بالغرق بسبب الذنوب (ص 9)[span_16](start_span)[span_16](end_span).</div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="quiz-box">
+                <div class="quiz-question">س3: حُكْمُ المِيمِ السَّاكِنَةِ فِي قَوْلِهِ تَعَالَى: (أَنْتُمْ بِمُعْجِزِينَ) هُوَ:</div>
+                <div class="quiz-option" onclick="handleChoice(this, false, 'g2_3', 'إِجَابَةٌ خَاطِئَةٌ!')">أ) إِظْهَارٌ شَفَوِيٌّ</div>
+                <div class="quiz-option" onclick="handleChoice(this, true, 'g2_3', 'أَبْدَعْتَ! إِخْفَاءٌ شَفَوِيٌّ لِوُقُوعِ البَاءِ بَعْدَ المِيمِ السَّاكِنَةِ.')">ب) إِخْفَاءٌ شَفَوِيٌّ</div>
+                <div class="quiz-option" onclick="handleChoice(this, false, 'g2_3', 'إِجَابَةٌ خَاطِئَةٌ!')">ج) إِدْغَامٌ شَفَوِيٌّ</div>
+                <div class="guidance-card" id="g2_3">💡 <strong>تَوْجِيهٌ تَرْبَوِيٌّ:</strong> إذا جاء حرف الباء بعد الميم الساكنة يكون الحكم إخفاءً شفوياً بغنة (ص 10)[span_17](start_span)[span_17](end_span).</div>
+            </div>
+        </div>
+
+        <!-- ================= LESSON 3 ================= -->
+        <div class="lesson-card" id="tab2">
+            <h2 class="section-title">الدَّرْسُ الثَّالِثُ: مِنْ آدَابِ المَجْلِسِ (ص 13 - 16)</h2>
+            
+            <div class="sub-header">1. التِّلَاوَةُ المُرَتَّلَةُ بصَوْتِ الشَّيْخِ المَقْرِئِ مَحْمُود خَلِيل الحُصَرِيِّ (سُورَةُ المُجَادَلَةِ 9 - 13)</div>
+            <button class="audio-player-btn" onclick="playQuranAudio('https://server13.mp3quran.net/hussary/058.mp3')">
+                ▶️ تشغيل / إيقاف التلاوة بصوت الشيخ الحصري (سورة المجادلة)
+            </button>
+
+            <div class="quran-box">
+                ﴿ يَا أَيُّهَا الَّذِينَ آمَنُوا إِذَا تَنَاجَيْتُمْ فَلَا تَتَنَاجَوْا بِالْإِثْمِ وَالْعُدْوَانِ وَمَعْصِيَتِ الرَّسُولِ وَتَنَاجَوْا بِالْبِرِّ وَالتَّقْوَى وَاتَّقُوا اللَّهَ الَّذِي إِلَيْهِ تُحْشَرُونَ <span class="aya-num">(9)</span> إِنَّمَا النَّجْوَى مِنَ الشَّيْطَانِ لِيَحْزُنَ الَّذِينَ آمَنُوا وَلَيْسَ بِضَارِّهِمْ شَيْئًا إِلَّا بِإِذْنِ اللَّهِ وَعَلَى اللَّهِ فَلْيَتَوَكَّلِ الْمُؤْمِنُونَ <span class="aya-num">(10)</span> يَا أَيُّهَا الَّذِينَ آمَنُوا إِذَا قِيلَ لَكُمْ تَفَسَّحُوا فِي الْمَجَالِسِ فَأَفْسَحُوا يَفْسَحِ اللَّهُ لَكُمْ وَإِذَا قِيلَ انْشُزُوا فَانْشُزُوا يَرْفَعِ اللَّهُ الَّذِينَ آمَنُوا مِنْكُمْ وَالَّذِينَ أُوتُوا الْعِلْمَ دَرَجَاتٍ وَاللَّهُ بِمَا تَعْمَلُونَ خَبِيرٌ <span class="aya-num">(11)</span> ﴾
+            </div>
+
+            <div class="sub-header">2. بَنْكُ الأَسْئِلَةِ التَّفَاعُلِيِّ (الدَّرْسُ الثَّالِثُ)</div>
+
+            <!-- Q1 -->
+            <div class="quiz-box">
+                <div class="quiz-question">س1: مَا مَعْنَى قَوْلِهِ تَعَالَى: ﴿ انْشُزُوا ﴾ فِي آدَابِ المَجْلِسِ؟</div>
+                <div class="quiz-option" onclick="handleChoice(this, true, 'g3_1', 'رَائِعٌ! انْشُزُوا أَيْ انْهَضُوا وَقُومُوا مِنْ المَجْلِسِ لِلْخَيْرِ.')">أ) انْهَضُوا وَقُومُوا</div>
+                <div class="quiz-option" onclick="handleChoice(this, false, 'g3_1', 'إِجَابَةٌ خَاطِئَةٌ!')">ب) اجْلِسُوا فِي المَكَانِ</div>
+                <div class="quiz-option" onclick="handleChoice(this, false, 'g3_1', 'إِجَابَةٌ خَاطِئَةٌ!')">ج) تَحَادَثُوا سِرّاً</div>
+                <div class="guidance-card" id="g3_1">💡 <strong>تَوْجِيهٌ تَرْبَوِيٌّ:</strong> انشزوا تعني النهوض والقيام لإتاحة المكان أو لإنجاز أمر نافع (ص 14)[span_18](start_span)[span_18](end_span).</div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="quiz-box">
+                <div class="quiz-question">س2: الحِكْمَةُ مِنْ نَهْيِ النَّبِيِّ ﷺ عَنْ تَنَاجِي اثْنَيْنِ دُونَ الثَّالِثِ فِي المَجْلِسِ هِيَ:</div>
+                <div class="quiz-option" onclick="handleChoice(this, true, 'g3_2', 'صَحِيحٌ! لأنَّ ذَلِكَ يُدْخِلُ الحُزْنَ وَالشَّكَّ فِي قَلْبِهِ.')">أ) لِأَنَّ ذَلِكَ يُحْزِنُهُ وَيَبْعَثُ الشَّكَّ فِي نَفْسِهِ</div>
+                <div class="quiz-option" onclick="handleChoice(this, false, 'g3_2', 'إِجَابَةٌ خَاطِئَةٌ!')">ب) لِأَنَّ المَجْلِسَ يَصِيرُ ضَيِّقاً</div>
+                <div class="quiz-option" onclick="handleChoice(this, false, 'g3_2', 'إِجَابَةٌ خَاطِئَةٌ!')">ج) لِأَنَّهُ لا يَجُوزُ الكَلَامُ سِرّاً مُطْلَقاً</div>
+                <div class="guidance-card" id="g3_2">💡 <strong>تَوْجِيهٌ تَرْبَوِيٌّ:</strong> قال رسول الله ﷺ: «فَإِنَّ ذَلِكَ يُحْزِنُهُ» حفاظاً على مشاعر الأخوة (ص 14)[span_19](start_span)[span_19](end_span).</div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 4: HANDWRITING CANVAS ================= -->
+        <div class="lesson-card" id="tab3">
+            <h2 class="section-title">✍️ سَبُّورَةُ الخَطِّ وَالتَّدْرِيبِ التَّفَاعُلِيَّةِ</h2>
+            <p style="font-weight: 700; color: #4b5563;">اُكْتُبْ بِقَلَمِكَ أَوْ لَمْسِ الشَّاشَةِ كَلِمَاتِ الدَّرْسِ أَوْ حَلَّ التَّدْرِيبَاتِ لِتَمْرِينِ يَدِكَ:</p>
+
+            <div class="canvas-container">
+                <canvas id="paintCanvas" width="800" height="380"></canvas>
+                <div class="canvas-tools">
+                    <button class="btn-tool" onclick="changeCanvasColor('#0a5c36')" style="background: #0a5c36;">🟢 أَخْضَرُ</button>
+                    <button class="btn-tool" onclick="changeCanvasColor('#2563eb')" style="background: #2563eb;">🔵 أَزْرَقُ</button>
+                    <button class="btn-tool" onclick="changeCanvasColor('#dc2626')" style="background: #dc2626;">🔴 أَحْمَرُ</button>
+                    <button class="btn-tool" onclick="changeCanvasColor('#000000')" style="background: #000000;">⚫ أَسْوَدُ</button>
+                    <button class="btn-tool" onclick="clearCanvas()" style="background: #d97706;">🧹 مَسْحُ السَّبُّورَةِ</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        جَمِيعُ الحُقُوقِ مَحْفُوظَةٌ © 2026 - إِعْدَادُ وَتَصْمِيمُ: الأُسْتَاذُ سَيْفُ الإِسْلَامِ حُسَيْن (0531343626)
+    </footer>
+
+<script>
+    // System Security Module
+    (function SecurityModule() {
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'PrintScreen' || (e.ctrlKey && (e.key === 'p' || e.key === 'P' || e.key === 's' || e.key === 'S' || e.key === 'u' || e.key === 'U'))) {
+                const overlay = document.getElementById('protOverlay');
+                overlay.style.display = 'flex';
+                setTimeout(() => { overlay.style.display = 'none'; }, 3000);
+                e.preventDefault();
+            }
+        });
+    })();
+
+    let audioCtx = null;
+    let isAudioEngineEnabled = false;
+    let currentScore = 0;
+    let activeQuranPlayer = null;
+
+    function enableAudioEngine() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        isAudioEngineEnabled = true;
+
+        const btn = document.getElementById('audioBtn');
+        btn.textContent = '🔊 الصَّوْتُ مُمَكَّنٌ وَمُفَعَّلٌ';
+        btn.style.background = '#22c55e';
+        btn.style.color = '#ffffff';
+
+        playSuccessTone();
+        speakArabicText('تم تفعيل المحرك الصوتي بنجاح، يمكنك الآن الاستماع والحل');
+    }
+
+    function playSynthesizedTone(freq, duration, type = 'sine') {
+        if (!isAudioEngineEnabled) return;
+        try {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        } catch (e) { console.error(e); }
+    }
+
+    function playSuccessTone() {
+        if (!isAudioEngineEnabled) return;
+        const now = audioCtx.currentTime;
+        [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + i * 0.08);
+            gain.gain.setValueAtTime(0.15, now + i * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.08 + 0.2);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + i * 0.08);
+            osc.stop(now + i * 0.08 + 0.2);
+        });
+    }
+
+    function playErrorTone() {
+        if (!isAudioEngineEnabled) return;
+        playSynthesizedTone(180, 0.25, 'sawtooth');
+    }
+
+    function speakArabicText(textStr) {
+        if (!isAudioEngineEnabled) return;
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utter = new SpeechSynthesisUtterance(textStr);
+            utter.lang = 'ar-SA';
+            utter.rate = 0.9;
+            window.speechSynthesis.speak(utter);
+        }
+    }
+
+    function playQuranAudio(audioUrl) {
+        if (!isAudioEngineEnabled) {
+            enableAudioEngine();
+        }
+        if (activeQuranPlayer) {
+            if (!activeQuranPlayer.paused) {
+                activeQuranPlayer.pause();
+                return;
+            }
+        }
+        activeQuranPlayer = new Audio(audioUrl);
+        activeQuranPlayer.play().catch(e => {
+            console.log('Audio playback error', e);
+        });
+    }
+
+    function switchTab(tabIdx, btnElement) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.lesson-card').forEach(c => c.classList.remove('active'));
+        
+        btnElement.classList.add('active');
+        document.getElementById(`tab${tabIdx}`).classList.add('active');
+        playSynthesizedTone(440, 0.08);
+
+        if (tabIdx === 3) {
+            setTimeout(initCanvas, 100);
+        }
+    }
+
+    function handleChoice(optionEl, isCorrect, guidanceId, feedbackMsg) {
+        const parent = optionEl.parentElement;
+        if (parent.dataset.answered === "true") return;
+        parent.dataset.answered = "true";
+
+        const guidanceBox = document.getElementById(guidanceId);
+
+        if (isCorrect) {
+            optionEl.classList.add('correct');
+            currentScore += 10;
+            document.getElementById('scoreDisplay').textContent = `⭐ النِّقَاطُ: ${currentScore}`;
+            playSuccessTone();
+            speakArabicText(feedbackMsg);
+            if (guidanceBox) guidanceBox.style.display = 'block';
+            if (typeof confetti === 'function') {
+                confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 } });
+            }
+        } else {
+            optionEl.classList.add('wrong');
+            playErrorTone();
+            speakArabicText(feedbackMsg);
+            if (guidanceBox) guidanceBox.style.display = 'block';
+        }
+    }
+
+    // Canvas Engine
+    let canvas, ctx, isDrawing = false;
+    let currentColor = '#0a5c36';
+
+    function initCanvas() {
+        canvas = document.getElementById('paintCanvas');
+        if (!canvas) return;
+        ctx = canvas.getContext('2d');
+
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = 380;
+
+        ctx.lineWidth = 4;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = currentColor;
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseleave', stopDrawing);
+
+        canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+        canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+        canvas.addEventListener('touchend', stopDrawing);
+    }
+
+    function startDrawing(e) {
+        isDrawing = true;
+        ctx.beginPath();
+        ctx.moveTo(e.offsetX, e.offsetY);
+    }
+
+    function draw(e) {
+        if (!isDrawing) return;
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+    }
+
+    function stopDrawing() { isDrawing = false; }
+
+    function handleTouchStart(e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        isDrawing = true;
+        ctx.beginPath();
+        ctx.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
+    }
+
+    function handleTouchMove(e) {
+        if (!isDrawing) return;
+        e.preventDefault();
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        ctx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
+        ctx.stroke();
+    }
+
+    function changeCanvasColor(colorHex) {
+        currentColor = colorHex;
+        if (ctx) ctx.strokeStyle = currentColor;
+    }
+
+    function clearCanvas() {
+        if (ctx && canvas) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            playSynthesizedTone(300, 0.1);
+        }
+    }
+</script>
+</body>
+</html>
